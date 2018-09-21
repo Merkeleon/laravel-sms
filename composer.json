@@ -1,0 +1,29 @@
+{
+  "name": "merkeleon/laravel-sms",
+  "description": "Table functionality for Laravel collections",
+  "keywords": ["laravel","sms", "merkeleon"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "andrei.korsak",
+      "email": "andrei.korsak@merkeleon.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "laravel/framework": "~5.6"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Merkeleon\\SMS\\Providers\\ServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Merkeleon\\SMS\\": "src/"
+    }
+  }
+}
