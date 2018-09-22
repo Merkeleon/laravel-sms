@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andreikorsak
- * Date: 2018-09-21
- * Time: 17:24
- */
 
 namespace Merkeleon\SMS\Driver;
 
@@ -13,7 +7,6 @@ use Merkeleon\SMS\Exception;
 
 class Clickatell implements DriverInterface
 {
-
     /**
      * API base URL
      * @var string
@@ -89,14 +82,13 @@ class Clickatell implements DriverInterface
      * Abstract CURL usage.
      *
      * @param string $uri The endpoint
-     * @param string $data Array of parameters
+     * @param array $data Array of parameters
      *
-     * @return Decoder
+     * @return array
+     * @throws Exception
      */
-    protected function curl($uri, $data)
+    protected function curl($uri, array $data = [])
     {
-        // Force data object to array
-        $data    = $data ? (array)$data : $data;
         $headers = [
             'Content-Type: application/json',
             'Accept: application/json',
@@ -130,6 +122,7 @@ class Clickatell implements DriverInterface
      * @param array $message The message parameters
      *
      * @return array
+     * @throws Exception
      */
     public function sendMessage(array $message)
     {
