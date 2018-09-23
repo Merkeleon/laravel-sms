@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andreikorsak
- * Date: 2018-09-21
- * Time: 17:23
- */
 
 namespace Merkeleon\SMS;
 
@@ -16,7 +10,7 @@ class Manager extends BaseManager
 {
     public function createClickatellDriver()
     {
-        return new Clickatell(config('sms.driver.clickatell.options'));
+        return new Clickatell(config('sms.driver.clickatell'));
     }
 
     public function getDefaultDriver()

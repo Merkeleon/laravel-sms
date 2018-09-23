@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andreikorsak
- * Date: 2018-09-21
- * Time: 17:29
- */
 
 namespace Merkeleon\SMS\Providers;
 
 
+use Illuminate\Support\ServiceProvider;
 use Merkeleon\SMS\Manager;
 
 class SMSServiceProvider extends ServiceProvider

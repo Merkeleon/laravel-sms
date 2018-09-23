@@ -3,8 +3,6 @@
 return [
     'driver'     => 'clickatell',
     'clickatell' => [
-        'options' => [
-            'token' => ''
-        ]
+        'token' => ''
     ]
 ];
