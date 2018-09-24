@@ -11,7 +11,7 @@ class Clickatell implements DriverInterface
      * API base URL
      * @var string
      */
-    const API_URL = 'https://platform.clickatell.com';
+    const API_URL = 'https://api.clickatell.com/';
     /**
      * @var string
      */
@@ -64,12 +64,13 @@ class Clickatell implements DriverInterface
             // and we will just return the entire body as an exception.
             if ($error = json_decode($result, true))
             {
-                $error = $error['error'];
+                $error = array_get($error, '0.error', array_get($error, 'error.description'));
             }
             else
             {
                 $error = $result;
             }
+
             throw new Exception($error);
         }
         else
@@ -90,10 +91,12 @@ class Clickatell implements DriverInterface
     protected function curl($uri, array $data = [])
     {
         $headers = [
+            'X-Version: 1',
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: ' . $this->apiToken
+            'Authorization: bearer ' . $this->apiToken
         ];
+
         // This is the clickatell endpoint. It doesn't really change so
         // it's safe for us to "hardcode" it here.
         $endpoint = static::API_URL . "/" . $uri;
@@ -126,88 +129,28 @@ class Clickatell implements DriverInterface
      */
     public function sendMessage(array $message)
     {
-        $response = $this->curl('messages', $message);
+        $response = $this->curl('rest/message', $message);
 
-        return $response['messages'];
-    }
-
-    /**
-     * @see https://www.clickatell.com/developers/api-documentation/rest-api-status-callback/
-     *
-     * @param callable $callback The function to trigger with desired parameters
-     * @param string $file The stream or file name, default to standard input
-     *
-     * @return void
-     */
-    public static function parseStatusCallback($callback, $file = STDIN)
-    {
-        $body = file_get_contents($file);
-        $body = json_decode($body, true);
-        $keys = [
-            'apiKey',
-            'messageId',
-            'requestId',
-            'clientMessageId',
-            'to',
-            'from',
-            'status',
-            'statusDescription',
-            'timestamp'
-        ];
-        if (!array_diff($keys, array_keys($body)))
+        if ($error = array_get($response, 'error'))
         {
-            $callback($body);
+            throw new Exception($error);
         }
 
-        return;
-    }
-
-    /**
-     * @see https://www.clickatell.com/developers/api-documentation/rest-api-reply-callback/
-     *
-     * @param callable $callback The function to trigger with desired parameters
-     * @param string $file The stream or file name, default to standard input
-     *
-     * @return void
-     */
-    public static function parseReplyCallback($callback, $file = STDIN)
-    {
-        $body = file_get_contents($file);
-        $body = json_decode($body, true);
-        $keys = [
-            'integrationId',
-            'messageId',
-            'replyMessageId',
-            'apiKey',
-            'fromNumber',
-            'toNumber',
-            'timestamp',
-            'text',
-            'charset',
-            'udh',
-            'network',
-            'keyword'
-        ];
-        if (!array_diff($keys, array_keys($body)))
-        {
-            $callback($body);
-        }
-
-        return;
+        return array_get($response, 'data.message.0');
     }
 
     public function send($to, $message)
     {
         try
         {
-            $result = $this->sendMessage(['to' => [$to], 'content' => $message]);
+            $result = $this->sendMessage(['to' => [$to], 'text' => $message]);
 
-            return array_get($result, 'messages.0.accepted');
+            return array_get($result, 'accepted');
 
         }
         catch (Exception $e)
         {
-
+            logger()->error('SMS Exception: ' . $e->getMessage() . ': ' . $e->getFile() . ' / ' . $e->getLine());
         }
 
         return false;
