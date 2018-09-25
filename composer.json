@@ -19,7 +19,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Merkeleon\\SMS\\Providers\\ServiceProvider"
+        "Merkeleon\\SMS\\Providers\\SMSServiceProvider"
       ]
     }
   },
