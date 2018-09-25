@@ -1,8 +1,11 @@
 <?php
 
 return [
-    'driver'     => 'clickatell',
-    'clickatell' => [
-        'token' => ''
-    ]
+    'driver' => env('SMS_DRIVER'),
+
+    'drivers' => [
+        'clickatell' => [
+            'token' => env('SMS_CLICKATELL_TOKEN')
+        ],
+    ],
 ];

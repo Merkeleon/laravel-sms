@@ -10,12 +10,12 @@ class Manager extends BaseManager
 {
     public function createClickatellDriver()
     {
-        return new Clickatell(config('sms.driver.clickatell'));
+        return new Clickatell(config('sms.drivers.clickatell'));
     }
 
     public function getDefaultDriver()
     {
-        return config('sms.driver');
+        return config('sms.default');
     }
 
 }

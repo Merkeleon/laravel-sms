@@ -16,7 +16,7 @@ class SMS extends Facade
     {
         return 'sms';
     }
-    
+
     protected static function resolveFacadeInstance($name)
     {
         return static::$app[$name];

@@ -18,7 +18,7 @@ class SMSServiceProvider extends ServiceProvider
         $this->app->bind('sms', function ($app) {
             $manager = new Manager($app);
 
-            return $manager->driver();
+            return $manager->driver(config('sms.driver'));
         });
     }
 
