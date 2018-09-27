@@ -8,6 +8,13 @@ use Merkeleon\SMS\Manager;
 
 class SMSServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        $this->publishes([
+            dirname(__DIR__) . '/config/sms.php' => config_path('sms.php'),
+        ]);
+    }
+
     /*
     * Register the service provider.
     *
@@ -20,6 +27,10 @@ class SMSServiceProvider extends ServiceProvider
 
             return $manager->driver(config('sms.driver'));
         });
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/sms.php', 'sms'
+        );
     }
 
     /**
