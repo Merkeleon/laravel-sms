@@ -11,7 +11,7 @@ class Clickatell implements DriverInterface
      * API base URL
      * @var string
      */
-    const API_URL = 'https://api.clickatell.com/';
+    const API_URL = 'https://platform.clickatell.com/';
     /**
      * @var string
      */
@@ -94,7 +94,7 @@ class Clickatell implements DriverInterface
             'X-Version: 1',
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: bearer ' . $this->apiToken
+            'Authorization: ' . $this->apiToken
         ];
 
         // This is the clickatell endpoint. It doesn't really change so
@@ -129,7 +129,7 @@ class Clickatell implements DriverInterface
      */
     public function sendMessage(array $message)
     {
-        $response = $this->curl('rest/message', $message);
+        $response = $this->curl('messages', $message);
 
         if ($error = array_get($response, 'error'))
         {
@@ -143,7 +143,7 @@ class Clickatell implements DriverInterface
     {
         try
         {
-            $result = $this->sendMessage(['to' => [$to], 'text' => $message]);
+            $result = $this->sendMessage(['to' => [$to], 'content' => $message]);
 
             return array_get($result, 'accepted');
 
