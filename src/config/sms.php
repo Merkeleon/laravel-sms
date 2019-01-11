@@ -11,7 +11,10 @@ return [
     'default' => 'log',
 
     'drivers' => [
-        'clickatell' => [
+        'clickatellV1' => [
+            'token' => env('SMS_CLICKATELL_TOKEN')
+        ],
+        'clickatellV2' => [
             'token' => env('SMS_CLICKATELL_TOKEN')
         ],
         'nexmo'      => [

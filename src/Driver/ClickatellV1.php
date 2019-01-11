@@ -5,26 +5,25 @@ namespace Merkeleon\SMS\Driver;
 
 use Merkeleon\SMS\Exception;
 
-class Clickatell implements DriverInterface
+/**
+ * Class ClickatellV1
+ *
+ * For registered Clickatell account before November 2016
+ *
+ * @package Merkeleon\SMS\Driver
+ */
+class ClickatellV1 implements DriverInterface
 {
     /**
      * API base URL
      * @var string
      */
-    const API_URL = 'https://platform.clickatell.com/';
-    /**
-     * @var string
-     */
-    const HTTP_GET = 'GET';
-    /**
-     * @var string
-     */
-    const HTTP_POST = 'POST';
+    const API_URL = 'https://api.clickatell.com/';
     /**
      * The CURL agent identifier
      * @var string
      */
-    const AGENT = 'ClickatellV2/1.0';
+    const AGENT = 'ClickatellPHP/2.1';
     /**
      * Excepted HTTP statuses
      * @var string
@@ -36,9 +35,9 @@ class Clickatell implements DriverInterface
     private $apiToken = '';
 
     /**
-     * Create a new API connection
+     * ClickatellV1 constructor.
      *
-     * @param string $apiToken The token found on your integration
+     * @param array $config
      */
     public function __construct(array $config = [])
     {
@@ -94,7 +93,7 @@ class Clickatell implements DriverInterface
             'X-Version: 1',
             'Content-Type: application/json',
             'Accept: application/json',
-            'Authorization: ' . $this->apiToken
+            'Authorization: bearer ' . $this->apiToken
         ];
 
         // This is the clickatell endpoint. It doesn't really change so
@@ -120,7 +119,7 @@ class Clickatell implements DriverInterface
     }
 
     /**
-     * @see https://www.clickatell.com/developers/api-documentation/rest-api-send-message/
+     * @see https://archive.clickatell.com/developers/2015/10/08/rest-api/
      *
      * @param array $message The message parameters
      *
@@ -129,7 +128,7 @@ class Clickatell implements DriverInterface
      */
     public function sendMessage(array $message)
     {
-        $response = $this->curl('messages', $message);
+        $response = $this->curl('rest/message', $message);
 
         if ($error = array_get($response, 'error'))
         {
@@ -139,11 +138,17 @@ class Clickatell implements DriverInterface
         return array_get($response, 'data.message.0');
     }
 
+    /**
+     * @param $to
+     * @param $message
+     *
+     * @return bool|mixed
+     */
     public function send($to, $message)
     {
         try
         {
-            $result = $this->sendMessage(['to' => [$to], 'content' => $message]);
+            $result = $this->sendMessage(['to' => [$to], 'text' => $message]);
 
             return array_get($result, 'accepted');
 
@@ -155,5 +160,4 @@ class Clickatell implements DriverInterface
 
         return false;
     }
-
 }
