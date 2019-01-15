@@ -3,7 +3,8 @@
 namespace Merkeleon\SMS;
 
 use Illuminate\Support\Manager as BaseManager;
-use Merkeleon\SMS\Driver\Clickatell;
+use Merkeleon\SMS\Driver\ClickatellV1;
+use Merkeleon\SMS\Driver\ClickatellV2;
 use Merkeleon\SMS\Driver\Log;
 use Merkeleon\SMS\Driver\Nexmo;
 use Merkeleon\SMS\Driver\Smsc;
@@ -11,9 +12,14 @@ use Merkeleon\SMS\Driver\Smsc;
 
 class Manager extends BaseManager
 {
-    public function createClickatellDriver()
+    public function createClickatellV1Driver()
     {
-        return new Clickatell(config('sms.drivers.clickatell'));
+        return new ClickatellV1(config('sms.drivers.clickatellV1'));
+    }
+
+    public function createClickatellV2Driver()
+    {
+        return new ClickatellV2(config('sms.drivers.clickatellV2'));
     }
 
     public function createLogDriver()
