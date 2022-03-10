@@ -80,10 +80,20 @@ SMS_SMSC_LOGIN=your_login_value
 SMS_SMSC_PASSWORD=your_password_value
 SMS_SMSC_SENDER=your_sender_value
 ```
+ 
+
+- [Cryptosasa]
+
+```
+SMS_DRIVER=cryptosasa
+SMS_CRYPTOSASA_URL=cryptosasa_api_url_value
+SMS_CRYPTOSASA_USERNAME=your_username_value
+SMS_CRYPTOSASA_SECRET=your_secret_value
+```
 
 
 [Сlickatell]: <https://www.clickatell.com>
 [Nexmo]: <https://www.nexmo.com>
 [SMS центр]: <https://smsc.ru>
-
+[Cryptosasa]: <https://www.cryptosasa.com/>
 
